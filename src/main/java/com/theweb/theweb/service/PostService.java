@@ -25,7 +25,7 @@ public class PostService {
     }
 
     public Post getById(Long id) {
-        return postRepository.findById(id).orElse(null);
+        return getPostOrThrow(id);
     }
 
     public void create(String title, String content, Authentication auth) {
@@ -49,7 +49,7 @@ public class PostService {
 
     public void update(Long id, String title, String content, Authentication auth) {
 
-        Post post = getById(id);
+        Post post = getPostOrThrow(id);
 
         // 권한 체크: 작성자 또는 admin인지
         if (!canModify(post, auth)) {
@@ -63,13 +63,18 @@ public class PostService {
 
     public void delete(Long id, Authentication auth) {
 
-        Post post = getById(id);
+        Post post = getPostOrThrow(id);
 
         if (!canModify(post, auth)) {
             throw new RuntimeException("권한이 없습니다.");
         }
 
         postRepository.delete(post);
+    }
+
+    private Post getPostOrThrow(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
     }
 
     private boolean canModify(Post post, Authentication auth) {
