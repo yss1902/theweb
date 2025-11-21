@@ -2,6 +2,8 @@ package com.theweb.theweb.service;
 
 import com.theweb.theweb.domain.Member;
 import com.theweb.theweb.domain.Post;
+import com.theweb.theweb.exception.ForbiddenException;
+import com.theweb.theweb.exception.UnauthorizedException;
 import com.theweb.theweb.repository.MemberRepository;
 import com.theweb.theweb.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,12 @@ public class PostService {
 
     public void create(String title, String content, Authentication auth) {
 
-        Member writer = memberRepository.findByUsername(auth.getName()).orElse(null);
+        if (auth == null) {
+            throw new UnauthorizedException("로그인이 필요합니다.");
+        }
+
+        Member writer = memberRepository.findByUsername(auth.getName())
+                .orElseThrow(() -> new ForbiddenException("작성 권한이 없습니다."));
 
         Post post = Post.builder()
                 .title(title)
