@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+</head>
+<body>
+<h2>회원가입</h2>
+
+<form th:action="@{/signup}" th:object="${signupForm}" method="post">
+
+    아이디: <input type="text" th:field="*{username}"><br><br>
+    비밀번호: <input type="password" th:field="*{password}"><br><br>
+    닉네임: <input type="text" th:field="*{nickname}"><br><br>
+
+    <button type="submit">가입</button>
+</form>
+
+</body>
+</html>

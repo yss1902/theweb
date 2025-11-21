@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>게시글</title></head>
+<body>
+
+<h2 th:text="${post.title}"></h2>
+작성자: <span th:text="${post.writer.nickname}"></span><br><br>
+작성일: <span th:text="${post.createdAt}"></span><br><br>
+
+<div th:text="${post.content}"></div>
+<br><br>
+
+<th:block th:if="${#authentication.name == post.writer.username or #authorization.expression('hasRole(''ADMIN'')')}">
+    <a th:href="@{|/post/${post.id}/edit|}">수정</a>
+    <form th:action="@{|/post/${post.id}/delete|}" method="post" style="display:inline;">
+        <button type="submit">삭제</button>
+    </form>
+</th:block>
+
+
+
+<a href="/">목록</a>
+
+</body>
+</html>
