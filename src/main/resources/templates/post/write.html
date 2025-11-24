@@ -3,6 +3,8 @@
 <head><meta charset="UTF-8"><title>글쓰기</title></head>
 <body>
 
+<th:block th:replace="fragments/user-info :: userInfo"></th:block>
+
 <h2>글쓰기</h2>
 
 <form th:action="@{/post/new}" method="post">

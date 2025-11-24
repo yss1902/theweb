@@ -3,6 +3,8 @@
 <head><meta charset="UTF-8"><title>글수정</title></head>
 <body>
 
+<th:block th:replace="fragments/user-info :: userInfo"></th:block>
+
 <h2>글 수정</h2>
 
 <form th:action="@{|/post/${post.id}/edit|}" method="post">
