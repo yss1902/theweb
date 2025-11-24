@@ -1,6 +1,7 @@
 package com.theweb.theweb.controller;
 
 import com.theweb.theweb.domain.Post;
+import com.theweb.theweb.repository.MemberRepository;
 import com.theweb.theweb.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -11,19 +12,38 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
+    private final MemberRepository memberRepository;
 
     // 목록
     @GetMapping("/")
-    public String list(Model model) {
+    public String list(Model model, Authentication auth, HttpSession session) {
         List<Post> posts = postService.getAll();
         model.addAttribute("posts", posts);
+
+        if (auth != null) {
+            Map<String, Object> currentUser = new HashMap<>();
+            currentUser.put("username", auth.getName());
+            currentUser.put("authorities", auth.getAuthorities());
+            if (session != null) {
+                currentUser.put("sessionId", session.getId());
+            }
+
+            model.addAttribute("currentUser", currentUser);
+            memberRepository.findByUsername(auth.getName())
+                    .ifPresent(member -> model.addAttribute("currentNickname", member.getNickname()));
+        } else {
+            model.addAttribute("currentUser", "게스트");
+        }
         return "post/list";
     }
 
