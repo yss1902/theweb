@@ -3,6 +3,8 @@
 <head><meta charset="UTF-8"><title>게시글</title></head>
 <body>
 
+<th:block th:replace="fragments/user-info :: userInfo"></th:block>
+
 <h2 th:text="${post.title}"></h2>
 작성자: <span th:text="${post.writer.nickname}"></span><br><br>
 작성일: <span th:text="${post.createdAt}"></span><br><br>
