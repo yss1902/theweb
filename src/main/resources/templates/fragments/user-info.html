@@ -1,10 +1,11 @@
 <th:block th:fragment="userInfo">
-  <div th:if="${currentUser}">
-    <strong th:text="${currentNickname} ?: ${currentUser}">사용자</strong> 님 로그인됨 |
-    세션ID: <span th:text="${sessionId}"></span> |
-    권한: <span th:text="${#strings.listJoin(authorities, ', ')}"></span>
-  </div>
-  <div th:unless="${currentUser}">
-    로그인되지 않았습니다. <a href="/login">로그인</a>
-  </div>
+    <div th:if="${currentUser}">
+        <strong th:text="${currentNickname} ?: ${currentUser}">사용자</strong> 님 로그인됨
+        <form action="/logout" method="post" style="display:inline; margin-left: 8px;">
+            <button type="submit">로그아웃</button>
+        </form>
+    </div>
+    <div th:unless="${currentUser}">
+        로그인되지 않았습니다. <a href="/login">로그인</a>
+    </div>
 </th:block>
